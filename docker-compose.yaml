@@ -5,7 +5,7 @@ services:
   api:
     build:
       context: api
-    image: ${REPO}/api:${TAG}
+    image: ${REPO}:${TAG}-api
     # depends_on:
     #   - redis
     healthcheck:
