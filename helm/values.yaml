@@ -39,3 +39,4 @@ affinity: {}
 
 serviceAccount:
   create: true
+  annotations: {}
