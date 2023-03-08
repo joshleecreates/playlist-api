@@ -44,10 +44,16 @@ spec:
             httpGet:
               path: /health
               port: 8080
+              httpHeaders:
+                - name: X-INSTANA-SYNTHETIC
+                  value: 1
           readinessProbe:
             httpGet:
               path: /health
               port: 8080
+              httpHeaders:
+                - name: X-INSTANA-SYNTHETIC
+                  value: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

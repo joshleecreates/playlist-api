@@ -4,11 +4,14 @@
   "description": "Node.js API for playlists",
   "author": "Josh Lee <Joshua.Michael.Lee@ibm.com>",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "@instana/collector": "^2.18.1",
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "mongodb": "^5.1.0",
+    "redis": "^4.6.5"
   }
 }
