@@ -27,11 +27,6 @@ spec:
       serviceAccountName: {{ include "playlist.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      env:
-        - name: INSTANA_AGENT_HOST
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -40,6 +35,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
+          env:
+            - name: INSTANA_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           livenessProbe:
             httpGet:
               path: /health
