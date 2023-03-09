@@ -40,3 +40,7 @@ affinity: {}
 serviceAccount:
   create: true
   annotations: {}
+
+redis:
+  auth:
+    enabled: false
