@@ -1,13 +1,12 @@
 version: '3'
 services:
-  # redis:
-  #   image: redis:6.2
   api:
     build:
       context: api
     image: ${REPO}:${TAG}-api
     depends_on:
       - mongo
+      - redis
     healthcheck:
       test: [ "CMD", "curl", "-H", "X-INSTANA-SYNTHETIC: 1", "-f", "http://localhost:8080/health" ]
       interval: 10s
@@ -19,6 +18,7 @@ services:
       - INSTANA_AGENT_HOST=host.docker.internal
       - INSTANA_SERVICE_NAME=playlist-api
       - MONGO_URL=mongodb://mongo:27017/catalogue
+      - REDIS_HOST=redis
     networks:
       - playlist-api
   mongo: 
@@ -32,6 +32,12 @@ services:
       - INSTANA_SERVICE_NAME=playlist-mongo
     networks:
       - playlist-api
-
+  redis:
+    image: redis:6.2
+    ports:
+      - 6379:6379
+    networks:
+      - playlist-api
+      
 networks:
   playlist-api:

@@ -2,7 +2,7 @@
 
 //Import express
 import express from 'express';
-import { getPlaylist, getPlaylists } from './src/playlists.js';
+import { getPlaylist } from './src/playlists.js';
 import db from './src/db.js';
 
 
@@ -17,11 +17,6 @@ app.get('/health', (req, res) => {
       app: 'OK',
   };
   res.json(stat);
-});
-
-app.get('/playlists', (req, res) => {
-  const playlists = getPlaylists();
-  res.json(playlists);
 });
 
 app.get('/playlist/:id', async (req, res) => {
