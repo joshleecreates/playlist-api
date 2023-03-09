@@ -41,7 +41,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: REDIS_URL
-              value: redis://playlists-redis-master.playlists.svc.cluster.local:6379
+              value: redis://redis:6379
             - name: MONGO_URL
               value: mongodb://playlists-mongodb.playlists.svc.cluster.local:27017
           livenessProbe:
