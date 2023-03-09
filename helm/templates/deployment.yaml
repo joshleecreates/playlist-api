@@ -6,7 +6,7 @@ metadata:
     {{- include "playlist.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: 0
   {{- end }}
   selector:
     matchLabels:
@@ -40,6 +40,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: REDIS_URL
+              value: redis://redis-master.svc.cluster.local:6379
+            - name: MONGO_URL
+              value: mongodb://mongodb.svc.cluster.local:6379
           livenessProbe:
             httpGet:
               path: /health

@@ -44,3 +44,8 @@ serviceAccount:
 redis:
   auth:
     enabled: false
+  replica:
+    replicaCount: 1
+mongodb:
+  auth:
+    enabled: false
