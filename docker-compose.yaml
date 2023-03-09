@@ -44,13 +44,40 @@ services:
      - "8089:8089"
     volumes:
       - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://master:8089
-  
+    command: -f /mnt/locust/locustfile.py --master -H http://locust:8089
+    environment:
+      - LOCUST_HOST=api:8080
+    networks:
+      - playlist-api 
+
   locustworker:
     image: locustio/locust
     volumes:
       - ./locust:/mnt/locust/
-    command: -f /mnt/locust/locustfile.py --worker --master-host master
-      
+    command: -f /mnt/locust/locustfile.py --worker --master-host locust
+    networks:
+      - playlist-api
+
+  # chrome:
+  #   image: selenium/node-chrome:4.8.1-20230306
+  #   shm_size: 2gb
+  #   depends_on:
+  #     - selenium-hub
+  #   environment:
+  #     - SE_EVENT_BUS_HOST=selenium-hub
+  #     - SE_EVENT_BUS_PUBLISH_PORT=4442
+  #     - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+  #   networks:
+  #     - playlist-api
+  # selenium-hub:
+  #   image: selenium/hub:4.8.1-20230306
+  #   container_name: selenium-hub
+  #   ports:
+  #     - "4442:4442"
+  #     - "4443:4443"
+  #     - "4444:4444"
+  #   networks:
+  #     - playlist-api
+
 networks:
   playlist-api:
