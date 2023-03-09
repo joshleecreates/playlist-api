@@ -3,7 +3,6 @@
 //Import express
 import express from 'express';
 import { getPlaylist } from './src/playlists.js';
-import db from './src/db.js';
 
 
 // Constants

@@ -18,7 +18,7 @@ services:
       - INSTANA_AGENT_HOST=host.docker.internal
       - INSTANA_SERVICE_NAME=playlist-api
       - MONGO_URL=mongodb://mongo:27017/catalogue
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis://redis:6379
     networks:
       - playlist-api
   mongo: 
@@ -38,6 +38,6 @@ services:
       - 6379:6379
     networks:
       - playlist-api
-      
+
 networks:
   playlist-api:
