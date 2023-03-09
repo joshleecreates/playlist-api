@@ -42,11 +42,23 @@ serviceAccount:
   annotations: {}
 
 redis:
+  architecture: standalone
   auth:
     enabled: false
   replica:
     replicaCount: 1
+  global:
+    storageClass: "do-block-storage"
+  master:
+    persistence:
+      size: 1Gi
+  replica:
+    persistence:
+      size: 1Gi
 mongodb:
+  persistence:
+    size: 1Gi
+  architecture: standalone
   global:
     storageClass: "do-block-storage"
   auth:
