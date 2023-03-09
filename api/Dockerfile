@@ -9,4 +9,4 @@ COPY server.js server.js
 
 ENV NODE_OPTIONS="--require ./node_modules/@instana/collector/src/immediate"
 EXPOSE 8080
-CMD [ "node", "./src/seeds.js", "./server.js" ]
+CMD [ "node", "./server.js" ]
