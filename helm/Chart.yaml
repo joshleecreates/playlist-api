@@ -23,6 +23,6 @@ version: 0.2.0
 # It is recommended to use it with quotes.
 appVersion: "0.2.0"
 dependencies:
-- name: bitnami/redis
-  version: "7.0.9"
+- name: redis
+  version: "17.8.3"
   repository: https://charts.bitnami.com/bitnami
