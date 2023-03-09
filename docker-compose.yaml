@@ -38,6 +38,19 @@ services:
       - 6379:6379
     networks:
       - playlist-api
+  locust:
+    image: locustio/locust
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://master:8089
+  
+  locustworker:
+    image: locustio/locust
+    volumes:
+      - ./locust:/mnt/locust/
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
       
 networks:
   playlist-api:
