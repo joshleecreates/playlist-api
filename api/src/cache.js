@@ -1,23 +1,18 @@
-import redis from "redis";
-import util from "util";
+'use strict';
 
-const redisUrl = process.env.REDIS_URL || "redis://127.0.0.1:6379";
-var client = redis.createClient(redisUrl);
-
-client.on("error", function(err) {
-  console.error("Error connecting to redis", err);
-});
-
-client.get = util.promisify(client.get);
-
-client.connect(); 
-
-const mongooseCache = function(mongoose) {
+const mongooseCache = function(mongoose, client) {
   const exec = mongoose.Query.prototype.exec;
+  client.on("connect", () => {
+    console.log(`[LOG] Redis connected`);
+    mongoose.Query.prototype._cache = true;
+  });
+  client.on("reconnecting", () => {
+    console.log(`[LOG] Redis disconnected`);
+    mongoose.Query.prototype._cache = false;
+  });
 
   mongoose.Query.prototype.cache = function(time) {
-    this._cache = true;
-
+    this._cache = false;
     if (time) {
       this._expire = time;
     }
@@ -26,14 +21,16 @@ const mongooseCache = function(mongoose) {
 
   mongoose.Query.prototype.exec = async function() {
     if (!this._cache) {
+      const maxDelay = process.env.MAX_DELAY || 0;
+      const delay = Math.floor(Math.random() * maxDelay);
+      await new Promise(resolve => setTimeout(resolve, delay));    
       return exec.apply(this, arguments);
     }
     console.log(`[LOG] Serving from cache`);
 
     const key = JSON.stringify(Object.assign({}, this.getQuery()));
     const cacheValue = await client.get(key);
-
-    if (cacheValue) {
+    if (cacheValue !== null) {
       const doc = JSON.parse(cacheValue);
 
       return Array.isArray(doc) ? doc.map(d => new this.model(d)) : new this.model(doc);

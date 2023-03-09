@@ -14,13 +14,18 @@ const songs = [
     rating: 5,
   },
   {
-    title: 'Bohemian Rhapsody',
+    title: 'We are the Champions',
     description: 'Rock',
     rating: 5,
   },
   {
     title: 'We Will Rock You',
     description: 'Rock',
+    rating: 4,
+  },
+  {
+    title: 'Roar',
+    description: 'Pop',
     rating: 4,
   },
 ];
@@ -31,7 +36,7 @@ const songIds = songRecords.map(song => song._id);
 
 //create a new playlist with the song ids
 const playlist = new Playlist({
-  title: 'Rock',
+  title: "Josh's Morning Routine",
   songs: songIds,
   slug: '01',
 });
