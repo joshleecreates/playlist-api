@@ -1,13 +1,15 @@
 'use strict';
 
-// import { songsCollection, playlistsCollection } from './db.js';
+import Playlist from './models/playlist.js';
+import Song from './models/song.js';
 
-export async function getPlaylist(playlistID) {
-  // const playlist = await playlistsCollection.findOne({ id: playlistID });
-  // const songs = await songsCollection.find({ id : { $in : playlist.songs } }).toArray();
-
+export async function getPlaylist(slug) {
+  const playlist = await Playlist.findOne({ slug: slug });
+  const songs = await Song.find({ _id: { $in: playlist.songs } });
   return {
-    playlist_id: playlistID,
-    // songs: songs,
-  }
+    data: {
+      playlist: playlist,
+      songs: songs,
+    }
+  };
 }

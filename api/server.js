@@ -3,7 +3,7 @@
 //Import express
 import express from 'express';
 import { getPlaylist } from './src/playlists.js';
-
+import './src/db.js';
 
 // Constants
 const PORT = 8080;
