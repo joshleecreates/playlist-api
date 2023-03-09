@@ -47,5 +47,7 @@ redis:
   replica:
     replicaCount: 1
 mongodb:
+  global:
+    storageClass: "do-block-storage"
   auth:
     enabled: false
