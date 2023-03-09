@@ -44,7 +44,7 @@ serviceAccount:
 redis:
   architecture: standalone
   auth:
-    enabled: false
+    enabled: true
   replica:
     replicaCount: 1
   global:
