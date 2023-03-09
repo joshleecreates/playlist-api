@@ -15,7 +15,6 @@ spec:
       labels:
         service: redis
     spec:
-      serviceAccountName: {{ include "playlist.serviceAccountName" . }}
       containers:
       - name: redis
         image: redis:4.0.6
@@ -38,10 +37,8 @@ spec:
         name: data
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        {{ if not .Values.openshift }}
         storageClassName: {{ .Values.redis.storageClassName }}
         volumeMode: Filesystem
-        {{ end }}
         resources:
           requests:
             storage: 1Gi
