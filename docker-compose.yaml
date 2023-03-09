@@ -21,6 +21,17 @@ services:
       - REDIS_URL=redis://redis:6379
     networks:
       - playlist-api
+  seeds:
+    build:
+      context: api
+    image: ${REPO}:${TAG}-api
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/catalogue
+    networks:
+      - playlist-api
+    command: [ "node", "./src/seeds.js"]
   mongo: 
     build:
       context: mongo
