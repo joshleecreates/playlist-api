@@ -46,7 +46,7 @@ spec:
             - name: ENABLE_CACHE
               value: "1"
             - name: MAX_DELAY
-              value: "3000" 
+              value: "30" 
           livenessProbe:
             httpGet:
               path: /health
