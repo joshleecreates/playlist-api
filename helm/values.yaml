@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: joshuamlee/playlists
   pullPolicy: Always
-  tag: "0.2.4"
+  tag: "0.2.5"
 
 imagePullSecrets: []
 nameOverride: ""
