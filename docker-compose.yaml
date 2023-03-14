@@ -29,6 +29,7 @@ services:
     depends_on:
       - mongo
     environment:
+      - ENABLE_CACHE="0"
       - MONGO_URL=mongodb://mongo:27017/catalogue
     networks:
       - playlist-api
