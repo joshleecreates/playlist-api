@@ -6,6 +6,7 @@ const connectionString = process.env.MONGO_URL || "";
 mongoose.connect(connectionString);
 
 if(process.env.ENABLE_CACHE) {
+  console.log('Redis Cache Enabled');
   const redisUrl = process.env.REDIS_URL || "redis://127.0.0.1:6317"
   const client = redis.createClient({url: redisUrl});
   client.connect();
