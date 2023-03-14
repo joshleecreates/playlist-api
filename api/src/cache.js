@@ -1,13 +1,15 @@
 'use strict';
 
+import logger from './logger.js';
+
 const mongooseCache = function(mongoose, client) {
   const exec = mongoose.Query.prototype.exec;
   client.on("connect", () => {
-    console.log(`[LOG] Redis connected`);
+    logger.info(`[LOG] Redis connected`);
     mongoose.Query.prototype._cache = true;
   });
   client.on("reconnecting", () => {
-    console.error(`[LOG] Redis disconnected`);
+    logger.error(`[LOG] Redis disconnected`);
     mongoose.Query.prototype._cache = false;
   });
 
@@ -20,10 +22,11 @@ const mongooseCache = function(mongoose, client) {
   };
 
   mongoose.Query.prototype.exec = async function() {
-    if (!this._cache) {  
+    if (!this._cache) {
+      logger.warn('cache disconnected');
       return exec.apply(this, arguments);
     }
-    console.log(`[LOG] Serving from cache`);
+    logger.info(`[LOG] Serving from cache`);
 
     const key = JSON.stringify(Object.assign({}, this.getQuery()));
     const cacheValue = await client.get(key);
