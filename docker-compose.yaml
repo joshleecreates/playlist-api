@@ -19,6 +19,7 @@ services:
       - INSTANA_SERVICE_NAME=playlist-api
       - MONGO_URL=mongodb://mongo:27017/catalogue
       - REDIS_URL=redis://redis:6379
+      - ENABLE_CACHE="1"
     networks:
       - playlist-api
   seeds:
@@ -44,7 +45,7 @@ services:
     networks:
       - playlist-api
   redis:
-    image: redis:6.2
+    image: redis:7.0.9
     ports:
       - 6379:6379
     networks:
