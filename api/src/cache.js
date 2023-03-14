@@ -7,7 +7,7 @@ const mongooseCache = function(mongoose, client) {
     mongoose.Query.prototype._cache = true;
   });
   client.on("reconnecting", () => {
-    console.log(`[LOG] Redis disconnected`);
+    console.error(`[LOG] Redis disconnected`);
     mongoose.Query.prototype._cache = false;
   });
 
@@ -20,10 +20,7 @@ const mongooseCache = function(mongoose, client) {
   };
 
   mongoose.Query.prototype.exec = async function() {
-    if (!this._cache) {
-      const maxDelay = process.env.MAX_DELAY || 0;
-      const delay = Math.floor(Math.random() * maxDelay);
-      await new Promise(resolve => setTimeout(resolve, delay));    
+    if (!this._cache) {  
       return exec.apply(this, arguments);
     }
     console.log(`[LOG] Serving from cache`);
