@@ -40,13 +40,13 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: REDIS_URL
-              value: redis://redis.playlists.svc.cluster.local:6379
+              value: redis://redis.playlsists.svc.cluster.local:6379
             - name: MONGO_URL
               value: mongodb://playlists-mongodb.playlists.svc.cluster.local:27017
             - name: ENABLE_CACHE
               value: "1"
             - name: MAX_DELAY
-              value: "30" 
+              value: "3000" 
           livenessProbe:
             httpGet:
               path: /health
