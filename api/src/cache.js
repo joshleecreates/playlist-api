@@ -13,15 +13,17 @@ const mongooseCache = function(mongoose, client) {
     mongoose.Query.prototype._cache = false;
   });
   mongoose.Query.prototype.cache = function(time) {
-    this._cache = false;
     if (time) {
       this._expire = time;
     }
     return this;
   };
 
+  client.connect();
+
   mongoose.Query.prototype.exec = async function() {
-    if (!this._cache) {
+    if (!this._cache || !mongoose.Query.prototype._cache) {
+      logger.warn('cache disabled');
       return exec.apply(this, arguments);
     }
     const key = JSON.stringify(Object.assign({}, this.getQuery()));
