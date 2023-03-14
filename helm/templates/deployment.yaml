@@ -40,7 +40,7 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: REDIS_URL
-              value: redis://redis.playlsists.svc.cluster.local:6379
+              value: redis://redis.playlists.svc.cluster.local:6379
             - name: MONGO_URL
               value: mongodb://playlists-mongodb.playlists.svc.cluster.local:27017
             - name: ENABLE_CACHE
