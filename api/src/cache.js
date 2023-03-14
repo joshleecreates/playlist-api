@@ -12,7 +12,6 @@ const mongooseCache = function(mongoose, client) {
     logger.error(`[LOG] Redis disconnected`);
     mongoose.Query.prototype._cache = false;
   });
-
   mongoose.Query.prototype.cache = function(time) {
     this._cache = false;
     if (time) {
@@ -23,13 +22,16 @@ const mongooseCache = function(mongoose, client) {
 
   mongoose.Query.prototype.exec = async function() {
     if (!this._cache) {
-      logger.warn('cache disconnected');
       return exec.apply(this, arguments);
     }
-    logger.info(`[LOG] Serving from cache`);
-
     const key = JSON.stringify(Object.assign({}, this.getQuery()));
-    const cacheValue = await client.get(key);
+    let cacheValue = null;
+    try {
+      cacheValue = await client.get(key);
+    } catch (e) {
+      logger.warn(e);
+    }
+    logger.info('made it');
     if (cacheValue !== null) {
       const doc = JSON.parse(cacheValue);
 
