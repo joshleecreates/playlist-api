@@ -1,0 +1,88 @@
+schemaVersion: 2.2.0
+metadata:
+  name: nodejs-api
+  version: 1.0.0
+  displayName: Node.js API
+  description: Node.js API application for playlist
+  tags: [Node.js, API, playlist]
+
+components:
+  - name: api
+    container:
+      image: node:16
+      env:
+        - name: INSTANA_AGENT_HOST
+          value: host.docker.internal
+        - name: INSTANA_SERVICE_NAME
+          value: playlist-api
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/catalogue
+        - name: REDIS_URL
+          value: redis://redis:6379
+        - name: ENABLE_CACHE
+          value: "1"
+      endpoints:
+        - name: http
+          exposure: public
+          targetPort: 8080
+          protocol: http
+      mountSources: true
+
+  - name: mongo
+    container:
+      image: mongo:4.4
+      env:
+        - name: INSTANA_AGENT_HOST
+          value: host.docker.internal
+        - name: INSTANA_SERVICE_NAME
+          value: playlist-mongo
+      endpoints:
+        - name: mongo
+          targetPort: 27017
+
+  - name: redis
+    container:
+      image: redis:7.0.9
+      mountSources: true
+    endpoints:
+      - name: redis
+        targetPort: 6379
+
+  - name: seeds
+    container:
+      image: ${REPO}:${TAG}-api
+      env:
+        - name: ENABLE_CACHE
+          value: "0"
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/catalogue
+      command: [ "node", "./src/seeds.js"]
+      mountSources: true
+
+commands:
+  - id: build-api
+    exec:
+      component: api
+      commandLine: npm install
+      workingDir: /projects/api
+      group:
+        kind: build
+        isDefault: true
+
+  - id: run-api
+    exec:
+      component: api
+      commandLine: npm start
+      workingDir: /projects/api
+      group:
+        kind: run
+        isDefault: true
+
+  - id: run-seeds
+    exec:
+      component: seeds
+      commandLine: npm start
+      workingDir: /projects/api
+      group:
+        kind: run
+        isDefault: false
